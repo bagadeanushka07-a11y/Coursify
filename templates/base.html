@@ -1,0 +1,584 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}Coursify{% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                C
+            </div>
+
+            <span>
+                Coursify
+            </span>
+
+        </div>
+
+
+        <!-- MAIN MENU -->
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="menu-item"
+        >
+            <span class="menu-icon">⌂</span>
+            <span class="menu-text">Dashboard</span>
+        </a>
+
+
+        <!-- =================================================
+             STUDENT MENU
+        ================================================== -->
+
+        {% if request.user.role == "student" %}
+
+            <a
+                href="{% url 'my_courses' %}"
+                class="menu-item"
+            >
+                <span class="menu-icon">▣</span>
+                <span class="menu-text">My Courses</span>
+            </a>
+
+
+            <a
+                href="{% url 'quiz_list' %}"
+                class="menu-item"
+            >
+                <span>📝</span>
+                <span class="menu-text">Quizzes</span>
+            </a>
+
+
+            <a
+                href="{% url 'course_list' %}"
+                class="menu-item"
+            >
+                <span>⌕</span>
+                <span class="menu-text">Explore</span>
+            </a>
+
+
+            <a
+                href="#"
+                class="menu-item"
+            >
+                <span>♡</span>
+                <span class="menu-text">Wishlist</span>
+            </a>
+
+
+            <a
+                href="#"
+                class="menu-item"
+            >
+                <span>◉</span>
+                <span class="menu-text">Progress</span>
+            </a>
+
+
+            <a
+                href="{% url 'certificate_list' %}"
+                class="menu-item"
+            >
+                <span>🎓</span>
+                <span class="menu-text">Certificates</span>
+            </a>
+
+
+        <!-- =================================================
+             INSTRUCTOR MENU
+        ================================================== -->
+
+        {% elif request.user.role == "instructor" %}
+
+            <a
+                href="{% url 'instructor_dashboard' %}"
+                class="menu-item"
+            >
+                <span>📚</span>
+                <span class="menu-text">My Courses</span>
+            </a>
+
+
+            <a
+                href="{% url 'quiz_list' %}"
+                class="menu-item"
+            >
+                <span>📝</span>
+                <span class="menu-text">Quizzes</span>
+            </a>
+
+
+            <a
+                href="{% url 'course_list' %}"
+                class="menu-item"
+            >
+                <span>⌕</span>
+                <span class="menu-text">Explore</span>
+            </a>
+
+
+            <a
+                href="{% url 'add_course' %}"
+                class="menu-item"
+            >
+                <span class="menu-icon">＋</span>
+                <span class="menu-text">Create Course</span>
+            </a>
+
+
+        <!-- =================================================
+             ADMIN MENU
+        ================================================== -->
+
+        {% elif request.user.role == "admin" %}
+
+            <a
+                href="{% url 'instructor_dashboard' %}"
+                class="menu-item"
+            >
+                <span>📚</span>
+                <span class="menu-text">Course Management</span>
+            </a>
+
+
+            <a
+                href="{% url 'quiz_list' %}"
+                class="menu-item"
+            >
+                <span>📝</span>
+                <span class="menu-text">Quizzes</span>
+            </a>
+
+
+            <a
+                href="{% url 'course_list' %}"
+                class="menu-item"
+            >
+                <span>⌕</span>
+                <span class="menu-text">Explore</span>
+            </a>
+
+
+            <a
+                href="{% url 'add_course' %}"
+                class="menu-item"
+            >
+                <span>＋</span>
+                <span class="menu-text">Create Course</span>
+            </a>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             ACCOUNT
+        ================================================== -->
+
+        <div class="menu-title bottom-title">
+            ACCOUNT
+        </div>
+
+
+        <a
+            href="{% url 'settings' %}"
+            class="menu-item"
+        >
+            <span>⚙</span>
+            <span class="menu-text">Settings</span>
+        </a>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="menu-item logout"
+        >
+            <span>↪</span>
+            <span class="menu-text">Logout</span>
+        </a>
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MOBILE SIDEBAR OVERLAY
+    ====================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        onclick="toggleSidebar()"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN PAGE
+    ====================================================== -->
+
+    <div class="page">
+
+
+        <!-- =================================================
+             TOP NAVBAR
+        ================================================== -->
+
+        <header class="topbar">
+
+
+            <!-- MOBILE MENU BUTTON -->
+
+            <button
+                type="button"
+                class="mobile-menu-toggle"
+                onclick="toggleSidebar()"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+                aria-controls="sidebar"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <span>
+                    ⌕
+                </span>
+
+                <input
+                    type="text"
+                    placeholder="Search for courses, topics..."
+                >
+
+            </div>
+
+
+            <!-- USER AREA -->
+
+            <div class="user-area">
+
+
+                <!-- NOTIFICATION -->
+
+                <button
+                    class="notification"
+                    type="button"
+                    aria-label="Notifications"
+                >
+                    ♢
+                </button>
+
+
+                <!-- PROFILE -->
+
+                <div class="profile">
+
+
+                    <!-- AVATAR -->
+
+                    <div class="avatar">
+
+                        {% if request.user.profile_picture %}
+
+                            <img
+                                src="{{ request.user.profile_picture.url }}"
+                                alt="{{ request.user.username }}"
+                            >
+
+                        {% else %}
+
+                            {{ request.user.username|slice:":1"|upper }}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- USER INFORMATION -->
+
+                    <div class="profile-info">
+
+                        <strong>
+                            {{ request.user.username }}
+                        </strong>
+
+                        <small>
+
+                            {% if request.user.role == "admin" %}
+
+                                Admin
+
+                            {% elif request.user.role == "instructor" %}
+
+                                Instructor
+
+                            {% else %}
+
+                                Student
+
+                            {% endif %}
+
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================== -->
+
+        <main class="content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </main>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         MOBILE SIDEBAR JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        function toggleSidebar() {
+
+            const sidebar =
+                document.getElementById("sidebar");
+
+            const overlay =
+                document.querySelector(".sidebar-overlay");
+
+            const button =
+                document.querySelector(".mobile-menu-toggle");
+
+
+            if (!sidebar) {
+                return;
+            }
+
+
+            const isOpen =
+                sidebar.classList.toggle("mobile-open");
+
+
+            if (overlay) {
+
+                overlay.classList.toggle(
+                    "active",
+                    isOpen
+                );
+
+            }
+
+
+            if (button) {
+
+                button.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
+                );
+
+            }
+
+
+            document.body.classList.toggle(
+                "sidebar-open",
+                isOpen
+            );
+
+        }
+
+
+        /* =================================================
+           CLOSE SIDEBAR AFTER CLICKING A MENU ITEM
+        ================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const sidebar =
+                    document.getElementById("sidebar");
+
+                const overlay =
+                    document.querySelector(".sidebar-overlay");
+
+                const button =
+                    document.querySelector(".mobile-menu-toggle");
+
+
+                if (!sidebar) {
+                    return;
+                }
+
+
+                const menuItems =
+                    sidebar.querySelectorAll(".menu-item");
+
+
+                menuItems.forEach(
+                    function (item) {
+
+                        item.addEventListener(
+                            "click",
+                            function () {
+
+                                if (
+                                    window.innerWidth <= 768
+                                ) {
+
+                                    sidebar.classList.remove(
+                                        "mobile-open"
+                                    );
+
+
+                                    if (overlay) {
+
+                                        overlay.classList.remove(
+                                            "active"
+                                        );
+
+                                    }
+
+
+                                    if (button) {
+
+                                        button.setAttribute(
+                                            "aria-expanded",
+                                            "false"
+                                        );
+
+                                    }
+
+
+                                    document.body.classList.remove(
+                                        "sidebar-open"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /* =============================================
+                   CLOSE SIDEBAR WHEN RESIZING TO DESKTOP
+                ============================================== */
+
+                window.addEventListener(
+                    "resize",
+                    function () {
+
+                        if (
+                            window.innerWidth > 768
+                        ) {
+
+                            sidebar.classList.remove(
+                                "mobile-open"
+                            );
+
+
+                            if (overlay) {
+
+                                overlay.classList.remove(
+                                    "active"
+                                );
+
+                            }
+
+
+                            if (button) {
+
+                                button.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+                            }
+
+
+                            document.body.classList.remove(
+                                "sidebar-open"
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

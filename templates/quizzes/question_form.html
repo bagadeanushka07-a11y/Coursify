@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Question | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    <div class="instructor-header">
+
+        <div>
+
+            <p class="small-heading">
+                INSTRUCTOR
+            </p>
+
+            <h1>
+                Add Question
+            </h1>
+
+            <p class="subtitle">
+                Add a question to {{ quiz.title }}.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="detail-left">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+
+            <div class="form-error">
+                {{ form.non_field_errors }}
+            </div>
+
+            {% endif %}
+
+
+            <div class="form-group">
+
+                <label>
+                    Question
+                </label>
+
+                {{ form.question_text }}
+
+                {% if form.question_text.errors %}
+
+                <div class="form-error">
+                    {{ form.question_text.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Option A
+                </label>
+
+                {{ form.option_a }}
+
+                {% if form.option_a.errors %}
+
+                <div class="form-error">
+                    {{ form.option_a.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Option B
+                </label>
+
+                {{ form.option_b }}
+
+                {% if form.option_b.errors %}
+
+                <div class="form-error">
+                    {{ form.option_b.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Option C
+                </label>
+
+                {{ form.option_c }}
+
+                {% if form.option_c.errors %}
+
+                <div class="form-error">
+                    {{ form.option_c.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Option D
+                </label>
+
+                {{ form.option_d }}
+
+                {% if form.option_d.errors %}
+
+                <div class="form-error">
+                    {{ form.option_d.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Correct Answer
+                </label>
+
+                {{ form.correct_answer }}
+
+                {% if form.correct_answer.errors %}
+
+                <div class="form-error">
+                    {{ form.correct_answer.errors }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="add-course-btn"
+                >
+                    Add Question
+                </button>
+
+                <a
+                    href="{% url 'manage_quiz' quiz.id %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

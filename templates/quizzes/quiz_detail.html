@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ quiz.title }} | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="quiz-page">
+
+    <!-- Quiz Header -->
+    <div class="lessons-header">
+
+        <p class="small-heading">
+            QUIZ
+        </p>
+
+        <h1>
+            {{ quiz.title }}
+        </h1>
+
+        {% if quiz.description %}
+        <p class="subtitle">
+            {{ quiz.description }}
+        </p>
+        {% endif %}
+
+        <div class="quiz-meta">
+            <span>
+                📝 {{ questions|length }} Questions
+            </span>
+
+            <span>
+                📚 {{ quiz.course.title }}
+            </span>
+        </div>
+
+    </div>
+
+
+    <!-- Quiz Form -->
+    <div class="quiz-container">
+
+        {% if questions %}
+
+        <form
+            method="POST"
+            action="{% url 'submit_quiz' quiz.id %}"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- Questions -->
+            {% for question in questions %}
+
+            <div class="quiz-question">
+
+                <div class="question-header">
+
+                    <span class="question-number">
+                        Question {{ forloop.counter }}
+                    </span>
+
+                </div>
+
+
+                <h3 class="question-text">
+                    {{ question.question_text }}
+                </h3>
+
+
+                <div class="quiz-options">
+
+                    <!-- Option A -->
+                    <label class="quiz-option">
+
+                        <input
+                            type="radio"
+                            name="question_{{ question.id }}"
+                            value="A"
+                            required
+                        >
+
+                        <span class="option-letter">
+                            A
+                        </span>
+
+                        <span class="option-text">
+                            {{ question.option_a }}
+                        </span>
+
+                    </label>
+
+
+                    <!-- Option B -->
+                    <label class="quiz-option">
+
+                        <input
+                            type="radio"
+                            name="question_{{ question.id }}"
+                            value="B"
+                        >
+
+                        <span class="option-letter">
+                            B
+                        </span>
+
+                        <span class="option-text">
+                            {{ question.option_b }}
+                        </span>
+
+                    </label>
+
+
+                    <!-- Option C -->
+                    <label class="quiz-option">
+
+                        <input
+                            type="radio"
+                            name="question_{{ question.id }}"
+                            value="C"
+                        >
+
+                        <span class="option-letter">
+                            C
+                        </span>
+
+                        <span class="option-text">
+                            {{ question.option_c }}
+                        </span>
+
+                    </label>
+
+
+                    <!-- Option D -->
+                    <label class="quiz-option">
+
+                        <input
+                            type="radio"
+                            name="question_{{ question.id }}"
+                            value="D"
+                        >
+
+                        <span class="option-letter">
+                            D
+                        </span>
+
+                        <span class="option-text">
+                            {{ question.option_d }}
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+
+            <!-- Submit -->
+            <div class="quiz-submit-section">
+
+                <button
+                    type="submit"
+                    class="quiz-submit-btn"
+                >
+                    ✓ Submit Quiz
+                </button>
+
+                <p>
+                    Make sure you have answered all questions
+                    before submitting.
+                </p>
+
+            </div>
+
+        </form>
+
+
+        {% else %}
+
+        <!-- Empty Quiz -->
+        <div class="empty-course">
+
+            <div class="empty-icon">
+                📝
+            </div>
+
+            <h3>
+                No questions available
+            </h3>
+
+            <p>
+                This quiz does not have any questions yet.
+            </p>
+
+            <a
+                href="{% url 'course_detail' quiz.course.id %}"
+                class="back-link"
+            >
+                ← Back to Course
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

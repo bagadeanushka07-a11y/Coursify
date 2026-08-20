@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Quiz Result | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="quiz-result-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="lessons-header">
+
+        <p class="small-heading">
+            QUIZ RESULT
+        </p>
+
+        <h1>
+            🎉 Quiz Completed
+        </h1>
+
+        <p class="subtitle">
+            {{ quiz.title }}
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCORE SUMMARY
+         ===================================================== -->
+
+    <div class="quiz-result-summary">
+
+        <div class="result-score">
+
+            <span class="score-label">
+                YOUR SCORE
+            </span>
+
+            <h2>
+                {{ score }} / {{ total_questions }}
+            </h2>
+
+            <p>
+                Correct Answers
+            </p>
+
+        </div>
+
+
+        <div class="result-percentage">
+
+            <span>
+                SCORE
+            </span>
+
+            <strong>
+                {{ percentage }}%
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESULT MESSAGE
+         ===================================================== -->
+
+    <div class="quiz-result-message">
+
+    {% if passed %}
+
+        <span class="result-emoji">
+            🏆
+        </span>
+
+        <div>
+
+            <strong>
+                Quiz Passed!
+            </strong>
+
+            <p>
+                Congratulations! You scored {{ percentage }}%.
+            </p>
+
+        </div>
+
+    {% else %}
+
+        <span class="result-emoji">
+            📚
+        </span>
+
+        <div>
+
+            <strong>
+                Quiz Not Passed
+            </strong>
+
+            <p>
+                You scored {{ percentage }}%.
+                You need at least 50% to pass.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+    <!-- =====================================================
+         QUESTION RESULTS
+         ===================================================== -->
+
+    <div class="quiz-results-section">
+
+        <div class="quiz-results-heading">
+
+            <h2>
+                Question Review
+            </h2>
+
+            <p>
+                Review your answers and see the correct answers.
+            </p>
+
+        </div>
+
+
+        <div class="quiz-results-list">
+
+            {% for result in results %}
+
+            <div
+                class="quiz-result-question
+                {% if result.is_correct %}
+                    answer-correct
+                {% else %}
+                    answer-wrong
+                {% endif %}"
+            >
+
+                <!-- Question Header -->
+
+                <div class="result-question-header">
+
+                    <span class="result-question-number">
+                        Question {{ forloop.counter }}
+                    </span>
+
+
+                    {% if result.is_correct %}
+
+                    <span class="answer-status correct">
+                        ✓ Correct
+                    </span>
+
+                    {% else %}
+
+                    <span class="answer-status wrong">
+                        ✗ Incorrect
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Question -->
+
+                <h3>
+                    {{ result.question.question_text }}
+                </h3>
+
+
+                <!-- Your Answer -->
+
+                <div class="answer-box">
+
+                    <span>
+                        Your Answer
+                    </span>
+
+                    <strong>
+                        {{ result.selected_text }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Correct Answer -->
+
+                {% if not result.is_correct %}
+
+                <div class="answer-box correct-answer-box">
+
+                    <span>
+                        Correct Answer
+                    </span>
+
+                    <strong>
+                        {{ result.correct_text }}
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% empty %}
+
+            <div class="empty-course">
+
+                <div class="empty-icon">
+                    📝
+                </div>
+
+                <h3>
+                    No results available
+                </h3>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTIONS
+         ===================================================== -->
+
+    <div class="quiz-result-actions">
+
+        <a
+            href="{% url 'quiz_detail' quiz.id %}"
+            class="enroll-btn"
+        >
+            🔄 Retake Quiz
+        </a>
+
+
+        <a
+            href="{% url 'lesson_list' quiz.course.id %}"
+            class="back-link"
+        >
+            ← Back to Lessons
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

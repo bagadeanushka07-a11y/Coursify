@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ lesson.title }} | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="lesson-page">
+
+    <!-- =====================================================
+         TOP
+    ====================================================== -->
+
+    <div class="lesson-top">
+
+        <a
+            href="{% url 'lesson_list' lesson.course.id %}"
+            class="back-link"
+        >
+            ← Back to Lessons
+        </a>
+
+        <span class="lesson-number">
+            LESSON {{ lesson.order }}
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="lesson-header">
+
+        <span class="course-badge">
+            {{ lesson.course.category.name }}
+        </span>
+
+        <h1>
+            {{ lesson.title }}
+        </h1>
+
+        <p class="lesson-course">
+            {{ lesson.course.title }}
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         COURSE PROGRESS
+    ====================================================== -->
+
+    <div class="course-progress-box">
+
+        <div class="progress-header">
+
+            <span>
+                Lesson Progress
+            </span>
+
+            <strong>
+                {{ course_progress }}%
+            </strong>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {{ course_progress }}%;"
+            ></div>
+
+        </div>
+
+        <small>
+            {{ completed_lessons }}
+            of
+            {{ total_lessons }}
+            lessons completed
+        </small>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUIZ STATUS
+    ====================================================== -->
+
+    <div class="quiz-status-box">
+
+        <div>
+
+            <span class="quiz-status-label">
+                Course Quiz
+            </span>
+
+            {% if quiz_passed %}
+
+                <strong class="quiz-status-passed">
+                    ✓ Quiz Passed
+                </strong>
+
+            {% else %}
+
+                <strong class="quiz-status-pending">
+                    ⚠ Quiz Not Passed
+                </strong>
+
+            {% endif %}
+
+        </div>
+
+
+        {% if quiz_passed %}
+
+            <p>
+                You have successfully passed the course quiz.
+            </p>
+
+        {% else %}
+
+            <p>
+                Complete the lessons and pass the quiz to unlock
+                your certificate.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================================
+         VIDEO
+    ====================================================== -->
+
+    {% if lesson.video_url %}
+
+        <div class="lesson-video">
+
+            <iframe
+                src="{{ lesson.video_url }}"
+                frameborder="0"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    {% else %}
+
+        <div class="lesson-video lesson-video-empty">
+
+            <div class="video-placeholder">
+                ▶
+            </div>
+
+            <h3>
+                No video available
+            </h3>
+
+            <p>
+                This lesson currently does not have a video.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         LESSON CONTENT
+    ====================================================== -->
+
+    <div class="lesson-body">
+
+        <div class="lesson-main">
+
+            <h2>
+                About this lesson
+            </h2>
+
+            <p>
+                {{ lesson.description }}
+            </p>
+
+        </div>
+
+
+        <div class="lesson-sidebar">
+
+            <!-- Duration -->
+
+            <div class="lesson-stat">
+
+                <span class="stat-icon">
+                    ⏱
+                </span>
+
+                <div>
+
+                    <small>
+                        Duration
+                    </small>
+
+                    <strong>
+                        {{ lesson.duration }} minutes
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Lessons -->
+
+            <div class="lesson-stat">
+
+                <span class="stat-icon">
+                    📚
+                </span>
+
+                <div>
+
+                    <small>
+                        Lessons
+                    </small>
+
+                    <strong>
+                        {{ completed_lessons }}/{{ total_lessons }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quiz -->
+
+            <div class="lesson-stat">
+
+                <span class="stat-icon">
+                    📝
+                </span>
+
+                <div>
+
+                    <small>
+                        Quiz
+                    </small>
+
+                    {% if quiz_passed %}
+
+                        <strong>
+                            Passed
+                        </strong>
+
+                    {% else %}
+
+                        <strong>
+                            Pending
+                        </strong>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LESSON COMPLETION
+    ====================================================== -->
+
+    <div class="lesson-completion">
+
+        {% if progress.completed %}
+
+            <div class="completed-message">
+                ✓ You completed this lesson
+            </div>
+
+        {% else %}
+
+            <form
+                method="POST"
+                action="{% url 'mark_complete' lesson.id %}"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="lesson-complete-btn"
+                >
+                    ✓ Mark as Complete
+                </button>
+
+            </form>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================================
+         COURSE COMPLETION / CERTIFICATE
+    ====================================================== -->
+
+    {% if course_progress == 100 and quiz_passed %}
+
+        <div class="course-completed-box">
+
+            <div class="course-completed-icon">
+                🎉
+            </div>
+
+            <h2>
+                Course Completed!
+            </h2>
+
+            <p>
+                Congratulations! You completed all lessons
+                and passed the course quiz.
+            </p>
+
+            <a
+                href="{% url 'certificate_list' %}"
+                class="certificate-btn"
+            >
+                🎓 View Certificate
+            </a>
+
+        </div>
+
+    {% elif course_progress == 100 and not quiz_passed %}
+
+        <div class="course-completed-box quiz-required">
+
+            <div class="course-completed-icon">
+                🔒
+            </div>
+
+            <h2>
+                Lessons Completed!
+            </h2>
+
+            <p>
+                You have completed all lessons.
+                Pass the course quiz to unlock your certificate.
+            </p>
+
+            <a
+                href="{% url 'quiz_list' %}"
+                class="quiz-btn"
+            >
+                📝 Take Quiz
+            </a>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <div class="lesson-navigation">
+
+        <div>
+
+            {% if previous_lesson %}
+
+                <a
+                    href="{% url 'lesson_detail' previous_lesson.id %}"
+                    class="lesson-nav-btn"
+                >
+                    ← Previous Lesson
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <div>
+
+            {% if next_lesson %}
+
+                <a
+                    href="{% url 'lesson_detail' next_lesson.id %}"
+                    class="lesson-nav-btn next"
+                >
+                    Next Lesson →
+                </a>
+
+            {% else %}
+
+                {% if course_progress == 100 and quiz_passed %}
+
+                    <span class="course-finished">
+                        🎉 Course Completed!
+                    </span>
+
+                {% elif course_progress == 100 %}
+
+                    <a
+                        href="{% url 'quiz_list' %}"
+                        class="lesson-nav-btn next"
+                    >
+                        Take Quiz →
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'lesson_list' lesson.course.id %}"
+                        class="lesson-nav-btn next"
+                    >
+                        Back to Lessons →
+                    </a>
+
+                {% endif %}
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

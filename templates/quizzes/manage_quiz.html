@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage {{ quiz.title }} | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="content">
+
+    <div class="instructor-header">
+
+        <div>
+
+            <p class="small-heading">
+                INSTRUCTOR
+            </p>
+
+            <h1>
+                {{ quiz.title }}
+            </h1>
+
+            <p class="subtitle">
+                {{ quiz.course.title }}
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'add_question' quiz.id %}"
+            class="add-course-btn"
+        >
+            + Add Question
+        </a>
+
+    </div>
+
+
+    <div class="quiz-info-card">
+
+        <div>
+            <span>Course</span>
+            <strong>{{ quiz.course.title }}</strong>
+        </div>
+
+        <div>
+            <span>Questions</span>
+            <strong>{{ questions|length }}</strong>
+        </div>
+
+    </div>
+
+
+    {% if questions %}
+
+    <div class="quiz-question-list">
+
+        {% for question in questions %}
+
+        <div class="quiz-question-card">
+
+            <div class="question-number">
+                {{ forloop.counter }}
+            </div>
+
+            <div class="question-content">
+
+                <h3>
+                    {{ question.question_text }}
+                </h3>
+
+                <div class="question-options">
+
+                    <span>
+                        A. {{ question.option_a }}
+                    </span>
+
+                    <span>
+                        B. {{ question.option_b }}
+                    </span>
+
+                    <span>
+                        C. {{ question.option_c }}
+                    </span>
+
+                    <span>
+                        D. {{ question.option_d }}
+                    </span>
+
+                </div>
+
+                <div class="correct-answer">
+                    Correct Answer:
+                    <strong>
+                        {{ question.correct_answer }}
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="question-actions">
+
+                <a
+                    href="{% url 'delete_question' question.id %}"
+                    class="delete-course-btn"
+                >
+                    Delete
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="instructor-empty">
+
+        <div class="instructor-empty-icon">
+            📝
+        </div>
+
+        <h3>
+            No questions yet
+        </h3>
+
+        <p>
+            Add questions to make this quiz available to students.
+        </p>
+
+        <a
+            href="{% url 'add_question' quiz.id %}"
+            class="add-course-btn"
+        >
+            + Add First Question
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="quiz-back-link">
+
+        <a href="{% url 'quiz_list' %}">
+            ← Back to Quizzes
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,525 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Instructor Dashboard | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="instructor-dashboard">
+
+    <!-- =====================================================
+         INSTRUCTOR HEADER
+    ===================================================== -->
+
+    <div class="instructor-header">
+
+        <div>
+
+            <p class="small-heading">
+                INSTRUCTOR
+            </p>
+
+            <h1>
+                Instructor Dashboard
+            </h1>
+
+            <p class="subtitle">
+                Create, manage and track your courses.
+            </p>
+
+        </div>
+
+
+        <div class="instructor-header-actions">
+
+            <!-- Analytics -->
+
+            <a
+    href="{% url 'instructor_analytics' %}"
+    class="analytics-dashboard-btn"
+>
+    📊 View Analytics
+</a>
+
+
+            <!-- Create Course -->
+
+            <a
+                href="{% url 'add_course' %}"
+                class="add-course-btn"
+            >
+                + Create Course
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INSTRUCTOR STATISTICS
+    ===================================================== -->
+
+    <div class="instructor-stats">
+
+        <!-- Total Courses -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                📚
+            </div>
+
+            <div>
+
+                <span>
+                    Total Courses
+                </span>
+
+                <strong>
+                    {{ total_courses }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Students -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                👨‍🎓
+            </div>
+
+            <div>
+
+                <span>
+                    Total Students
+                </span>
+
+                <strong>
+                    {{ total_students }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Lessons -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                📖
+            </div>
+
+            <div>
+
+                <span>
+                    Total Lessons
+                </span>
+
+                <strong>
+                    {{ total_lessons }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Instructor -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                🎓
+            </div>
+
+            <div>
+
+                <span>
+                    Instructor
+                </span>
+
+                <strong>
+                    {{ request.user.username }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         QUICK ANALYTICS BANNER
+    ===================================================== -->
+
+    <div class="instructor-analytics-banner">
+
+        <div class="analytics-banner-icon">
+            📊
+        </div>
+
+
+        <div class="analytics-banner-content">
+
+            <h3>
+                Track Your Teaching Performance
+            </h3>
+
+            <p>
+                View student enrollments, course completion,
+                lesson performance and overall teaching statistics.
+            </p>
+
+        </div>
+
+
+        <a
+    href="{% url 'instructor_analytics' %}"
+    class="instructor-analytics-link"
+>
+    View Analytics →
+</a>
+
+    </div>
+
+
+    <!-- =====================================================
+         MY COURSES HEADER
+    ===================================================== -->
+
+    <div class="instructor-section-header">
+
+        <div>
+
+            <h2>
+                My Courses
+            </h2>
+
+            <p>
+                Track your course performance and manage your content.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COURSE LIST
+    ===================================================== -->
+
+    {% if courses %}
+
+    <div class="instructor-course-grid">
+
+        {% for course in courses %}
+
+        <div class="instructor-course-card">
+
+
+            <!-- =================================================
+                 COURSE IMAGE
+            ================================================= -->
+
+            <div class="instructor-course-image">
+
+                {% if course.thumbnail %}
+
+                <img
+                    src="{{ course.thumbnail.url }}"
+                    alt="{{ course.title }}"
+                >
+
+                {% else %}
+
+                <div class="instructor-default-image">
+                    🎓
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =================================================
+                 COURSE INFORMATION
+            ================================================= -->
+
+            <div class="instructor-course-info">
+
+
+                <!-- Category -->
+
+                <span class="course-category">
+                    {{ course.category.name }}
+                </span>
+
+
+                <!-- Course Title -->
+
+                <h3>
+                    {{ course.title }}
+                </h3>
+
+
+                <!-- Description -->
+
+                <p>
+                    {{ course.description|truncatewords:18 }}
+                </p>
+
+
+                <!-- Course Meta -->
+
+                <div class="instructor-course-meta">
+
+                    <span>
+                        {{ course.level }}
+                    </span>
+
+                    <span>
+                        ⏱ {{ course.duration }} hrs
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     COURSE ANALYTICS
+                ================================================= -->
+
+                <div class="course-analytics">
+
+
+                    <!-- Students -->
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Students
+                        </span>
+
+                        <strong>
+                            {{ course.student_count }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Lessons -->
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Lessons
+                        </span>
+
+                        <strong>
+                            {{ course.lesson_count }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Completed -->
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <strong>
+                            {{ course.completed_lessons }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     COURSE COMPLETION
+                ================================================= -->
+
+                <div class="course-completion">
+
+                    <div class="course-completion-header">
+
+                        <span>
+                            Student Progress
+                        </span>
+
+                        <strong>
+                            {{ course.completion_percentage }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="course-completion-bar">
+
+                        <div
+                            class="course-completion-fill"
+                            style="width: {{ course.completion_percentage }}%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     COURSE ACTIONS
+                ================================================= -->
+
+                <div class="instructor-course-actions">
+
+
+                    <!-- View Course -->
+
+                    <a
+                        href="{% url 'course_detail' course.id %}"
+                        class="view-course-btn"
+                    >
+                        👁 View
+                    </a>
+
+
+                    <!-- Analytics -->
+
+                    <a
+                        href="{% url 'instructor_analytics' %}?course={{ course.id }}"
+                        class="course-analytics-btn"
+                    >
+                        📊 Analytics
+                    </a>
+
+
+                    <!-- Manage Lessons -->
+
+                    <a
+                        href="{% url 'manage_lessons' course.id %}"
+                        class="manage-lessons-btn"
+                    >
+                        📖 Lessons
+                    </a>
+
+
+                    <!-- Edit Course -->
+
+                    <a
+                        href="{% url 'edit_course' course.id %}"
+                        class="edit-course-btn"
+                    >
+                        ✏ Edit
+                    </a>
+
+
+                    <!-- Delete Course -->
+
+                    <a
+                        href="{% url 'delete_course' course.id %}"
+                        class="delete-course-btn"
+                    >
+                        🗑 Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- =====================================================
+         EMPTY STATE
+    ===================================================== -->
+
+    {% else %}
+
+    <div class="instructor-empty">
+
+        <div class="instructor-empty-icon">
+            📚
+        </div>
+
+
+        <h3>
+            You haven't created any courses yet.
+        </h3>
+
+
+        <p>
+            Create your first course and start teaching.
+        </p>
+
+
+        <a
+            href="{% url 'add_course' %}"
+            class="add-course-btn"
+        >
+            + Create Your First Course
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         ANALYTICS FOOTER CARD
+    ===================================================== -->
+
+    {% if courses %}
+
+    <div class="analytics-footer-card">
+
+        <div>
+
+            <span class="small-heading">
+                COURSE INSIGHTS
+            </span>
+
+
+            <h2>
+                Want to see detailed performance?
+            </h2>
+
+
+            <p>
+                Analyze enrollments, student activity,
+                completion rates and course performance
+                from one place.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'instructor_analytics' %}"
+            class="analytics-footer-btn"
+        >
+            Open Instructor Analytics →
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

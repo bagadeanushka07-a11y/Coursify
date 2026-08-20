@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Delete Lesson | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="delete-page">
+
+```
+<div class="delete-card">
+
+    <div class="delete-icon">
+        ⚠️
+    </div>
+
+    <p class="small-heading">
+        DELETE LESSON
+    </p>
+
+    <h1>
+        Delete Lesson?
+    </h1>
+
+    <p class="delete-message">
+        Are you sure you want to delete
+        <strong>"{{ lesson.title }}"</strong>?
+    </p>
+
+    <p class="delete-warning">
+        This action cannot be undone. The lesson and its student
+        progress data will be permanently deleted.
+    </p>
+
+
+    <div class="delete-info">
+
+        <div>
+            <span>Course</span>
+            <strong>{{ lesson.course.title }}</strong>
+        </div>
+
+        <div>
+            <span>Lesson</span>
+            <strong>{{ lesson.order }}</strong>
+        </div>
+
+        <div>
+            <span>Duration</span>
+            <strong>{{ lesson.duration }} minutes</strong>
+        </div>
+
+    </div>
+
+
+    <form
+        method="POST"
+        class="delete-form"
+    >
+
+        {% csrf_token %}
+
+        <a
+            href="{% url 'manage_lessons' lesson.course.id %}"
+            class="cancel-btn"
+        >
+            Cancel
+        </a>
+
+        <button
+            type="submit"
+            class="delete-confirm-btn"
+        >
+            Yes, Delete Lesson
+        </button>
+
+    </form>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

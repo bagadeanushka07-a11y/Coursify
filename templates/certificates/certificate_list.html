@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Certificates | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="instructor-header">
+
+    <div>
+
+        <p class="small-heading">
+            ACHIEVEMENTS
+        </p>
+
+        <h1>
+            My Certificates
+        </h1>
+
+        <p class="subtitle">
+            View the certificates you have earned.
+        </p>
+
+    </div>
+
+</div>
+
+
+{% if certificates %}
+
+<div class="course-grid">
+
+    {% for certificate in certificates %}
+
+    <div class="course-card">
+
+        <div class="course-image default-course">
+            🎓
+        </div>
+
+        <div class="course-info">
+
+            <span class="course-category">
+                Certificate
+            </span>
+
+            <h3>
+                {{ certificate.course.title }}
+            </h3>
+
+            <p>
+                Congratulations! You successfully
+                completed this course.
+            </p>
+
+            <div class="course-meta">
+
+                <span>
+                    🆔 {{ certificate.certificate_id }}
+                </span>
+
+                <span>
+                    📅 {{ certificate.issued_at|date:"d M Y" }}
+                </span>
+
+            </div>
+
+            <div class="course-bottom">
+
+                <span class="level">
+                    Completed
+                </span>
+
+                <a
+                    href="{% url 'certificate_detail' certificate.id %}"
+                    class="enroll-btn"
+                >
+                    View Certificate
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-course">
+
+    <div class="empty-icon">
+        🎓
+    </div>
+
+    <h3>
+        No certificates yet
+    </h3>
+
+    <p>
+        Complete a course to earn your certificate.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

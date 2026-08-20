@@ -1,0 +1,238 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+{{ course.title }} | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="course-detail-page">
+
+    <!-- Back Button -->
+
+    <a
+        href="{% url 'course_list' %}"
+        class="back-link"
+    >
+        ← Back to Courses
+    </a>
+
+
+    <!-- Course Detail Card -->
+
+    <div class="course-detail-card">
+
+
+        <!-- =================================
+             COURSE IMAGE
+        ================================= -->
+
+        <div class="course-detail-image">
+
+            {% if course.thumbnail %}
+
+                <img
+                    src="{{ course.thumbnail.url }}"
+                    alt="{{ course.title }}"
+                >
+
+            {% else %}
+
+                <div class="course-detail-default">
+                    🎓
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================
+             COURSE INFORMATION
+        ================================= -->
+
+        <div class="course-detail-info">
+
+
+            <!-- Category -->
+
+            <span class="course-category">
+                {{ course.category.name }}
+            </span>
+
+
+            <!-- Course Title -->
+
+            <h1>
+                {{ course.title }}
+            </h1>
+
+
+            <!-- Description -->
+
+            <p class="course-detail-description">
+                {{ course.description }}
+            </p>
+
+
+            <!-- =================================
+                 COURSE META INFORMATION
+            ================================= -->
+
+            <div class="course-detail-meta">
+
+
+                <!-- Instructor -->
+
+                <div class="detail-meta-item">
+
+                    <span class="meta-label">
+                        Instructor
+                    </span>
+
+                    <strong>
+                        👤 {{ course.instructor.username }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Level -->
+
+                <div class="detail-meta-item">
+
+                    <span class="meta-label">
+                        Level
+                    </span>
+
+                    <strong>
+                        {{ course.level }}
+                    </strong>
+
+                </div>
+
+
+                <!-- Duration -->
+
+                <div class="detail-meta-item">
+
+                    <span class="meta-label">
+                        Duration
+                    </span>
+
+                    <strong>
+                        ⏱ {{ course.duration }} hours
+                    </strong>
+
+                </div>
+
+
+                <!-- Category -->
+
+                <div class="detail-meta-item">
+
+                    <span class="meta-label">
+                        Category
+                    </span>
+
+                    <strong>
+                        {{ course.category.name }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PRICE + ACTION
+            ================================= -->
+
+            <div class="course-detail-bottom">
+
+
+                <!-- PRICE -->
+
+                <div class="course-price-box">
+
+                    <span class="price-label">
+                        Course Price
+                    </span>
+
+
+                    <strong class="detail-price">
+
+                        {% if course.price == 0 %}
+
+                            Free
+
+                        {% else %}
+
+                            ₹{{ course.price }}
+
+                        {% endif %}
+
+                    </strong>
+
+
+                    <small>
+                        One-time course enrollment
+                    </small>
+
+                </div>
+
+
+                <!-- =================================
+                     STUDENT
+                ================================= -->
+
+                {% if request.user.role == "student" %}
+
+                    <a
+                        href="{% url 'enroll_course' course.id %}"
+                        class="enroll-btn"
+                    >
+                        Enroll Now →
+                    </a>
+
+
+                <!-- =================================
+                     INSTRUCTOR
+                ================================= -->
+
+                {% elif request.user.role == "instructor" %}
+
+                    <div class="instructor-course-message">
+
+                        🎓 You are logged in as an Instructor.
+
+                    </div>
+
+
+                <!-- =================================
+                     ADMIN
+                ================================= -->
+
+                {% elif request.user.role == "admin" %}
+
+                    <div class="instructor-course-message">
+
+                        ⚙️ You are logged in as an Admin.
+
+                    </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

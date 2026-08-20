@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Quizzes | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="instructor-header">
+
+    <div>
+
+        <p class="small-heading">
+            LEARNING
+        </p>
+
+        <h1>
+            Quizzes
+        </h1>
+
+        {% if request.user.role == "student" %}
+
+            <p class="subtitle">
+                Test your knowledge and track your progress.
+            </p>
+
+        {% elif request.user.role == "instructor" %}
+
+            <p class="subtitle">
+                Create, manage and monitor quizzes for your courses.
+            </p>
+
+        {% elif request.user.role == "admin" %}
+
+            <p class="subtitle">
+                Manage quizzes and questions across all courses.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if request.user.role == "instructor" or request.user.role == "admin" %}
+
+        <a
+            href="{% url 'create_quiz' %}"
+            class="add-course-btn"
+        >
+            + Create Quiz
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+{% if quizzes %}
+
+<div class="course-grid">
+
+    {% for quiz in quizzes %}
+
+    <div class="course-card">
+
+        <!-- Quiz Image -->
+
+        <div class="course-image default-course">
+            📝
+        </div>
+
+
+        <!-- Quiz Information -->
+
+        <div class="course-info">
+
+            <!-- Category -->
+
+            <span class="course-category">
+                {{ quiz.course.category.name }}
+            </span>
+
+
+            <!-- Quiz Title -->
+
+            <h3>
+                {{ quiz.title }}
+            </h3>
+
+
+            <!-- Description -->
+
+            <p>
+                {{ quiz.description|truncatewords:15 }}
+            </p>
+
+
+            <!-- Quiz Meta -->
+
+            <div class="course-meta">
+
+                <span>
+                    📚 {{ quiz.course.title }}
+                </span>
+
+                <span>
+                    ❓ {{ quiz.questions.count }} Questions
+                </span>
+
+            </div>
+
+
+            <!-- Bottom -->
+
+            <div class="course-bottom">
+
+                <span class="level">
+                    Quiz
+                </span>
+
+
+                <!-- =====================================
+                     STUDENT ACTION
+                ====================================== -->
+
+                {% if request.user.role == "student" %}
+
+                    <a
+                        href="{% url 'quiz_detail' quiz.id %}"
+                        class="enroll-btn"
+                    >
+                        Start Quiz
+                    </a>
+
+
+                <!-- =====================================
+                     INSTRUCTOR ACTION
+                ====================================== -->
+
+                {% elif request.user.role == "instructor" %}
+
+                    {% if quiz.course.instructor == request.user %}
+
+                        <div class="quiz-action-buttons">
+
+                            <a
+                                href="{% url 'manage_quiz' quiz.id %}"
+                                class="manage-lessons-btn"
+                            >
+                                Manage Quiz
+                            </a>
+
+                            <a
+                                href="{% url 'add_question' quiz.id %}"
+                                class="edit-course-btn"
+                            >
+                                + Add Questions
+                            </a>
+
+                        </div>
+
+                    {% else %}
+
+                        <span class="level">
+                            Instructor
+                        </span>
+
+                    {% endif %}
+
+
+                <!-- =====================================
+                     ADMIN ACTION
+                ====================================== -->
+
+                {% elif request.user.role == "admin" %}
+
+                    <div class="quiz-action-buttons">
+
+                        <a
+                            href="{% url 'manage_quiz' quiz.id %}"
+                            class="manage-lessons-btn"
+                        >
+                            Manage Quiz
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% else %}
+
+<!-- =====================================
+     EMPTY STATE
+====================================== -->
+
+<div class="empty-course">
+
+    <div class="empty-icon">
+        📝
+    </div>
+
+
+    {% if request.user.role == "student" %}
+
+        <h3>
+            No quizzes available
+        </h3>
+
+        <p>
+            Quizzes will appear here once they are created.
+        </p>
+
+
+    {% elif request.user.role == "instructor" %}
+
+        <h3>
+            No quizzes created yet
+        </h3>
+
+        <p>
+            Create a quiz for one of your courses.
+        </p>
+
+        <a
+            href="{% url 'create_quiz' %}"
+            class="add-course-btn"
+        >
+            + Create Your First Quiz
+        </a>
+
+
+    {% elif request.user.role == "admin" %}
+
+        <h3>
+            No quizzes available
+        </h3>
+
+        <p>
+            Create a quiz to get started.
+        </p>
+
+        <a
+            href="{% url 'create_quiz' %}"
+            class="add-course-btn"
+        >
+            + Create Your First Quiz
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

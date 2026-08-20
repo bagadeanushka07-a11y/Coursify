@@ -1,0 +1,473 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Dashboard | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-page">
+
+
+    <!-- =================================
+         HEADER
+    ================================= -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="small-heading">
+                LEARNING DASHBOARD
+            </p>
+
+            <h1>
+                Good to see you,
+                {{ request.user.username }}! 👋
+            </h1>
+
+            <p class="subtitle">
+                Keep learning and move closer to your goals.
+            </p>
+
+        </div>
+
+
+        <div class="learning-badge">
+            🎓 Keep Learning
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         STATISTICS
+    ================================= -->
+
+    <div class="dashboard-stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                📚
+            </div>
+
+            <div>
+
+                <p>
+                    Enrolled Courses
+                </p>
+
+                <h2>
+                    {{ enrolled_count }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                ▶
+            </div>
+
+            <div>
+
+                <p>
+                    Lessons Completed
+                </p>
+
+                <h2>
+                    {{ completed_lessons_count }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                ✓
+            </div>
+
+            <div>
+
+                <p>
+                    Courses Completed
+                </p>
+
+                <h2>
+                    {{ completed_courses_count }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                📈
+            </div>
+
+            <div>
+
+                <p>
+                    Overall Progress
+                </p>
+
+                <h2>
+                    {{ overall_progress }}%
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         CONTINUE LEARNING
+    ================================= -->
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Continue Learning
+            </h2>
+
+            <p>
+                Pick up where you left off
+            </p>
+
+        </div>
+
+
+        <a href="{% url 'my_courses' %}">
+            View all →
+        </a>
+
+    </div>
+
+
+    {% if enrollments %}
+
+
+    <div class="dashboard-learning-list">
+
+        {% for enrollment in enrollments|slice:":3" %}
+
+        <div class="dashboard-course-card">
+
+
+            <!-- Image -->
+
+            <div class="dashboard-course-image">
+
+                {% if enrollment.course.thumbnail %}
+
+                    <img
+                        src="{{ enrollment.course.thumbnail.url }}"
+                        alt="{{ enrollment.course.title }}"
+                    >
+
+                {% else %}
+
+                    <div class="dashboard-default-image">
+                        🎓
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Information -->
+
+            <div class="dashboard-course-info">
+
+                <span class="course-category">
+                    {{ enrollment.course.category.name }}
+                </span>
+
+
+                <h3>
+                    {{ enrollment.course.title }}
+                </h3>
+
+
+                <p>
+                    {{ enrollment.course.description|truncatewords:18 }}
+                </p>
+
+
+                <!-- Progress -->
+
+                <div class="dashboard-progress">
+
+                    <div class="dashboard-progress-header">
+
+                        <span>
+                            Progress
+                        </span>
+
+                        <strong>
+                            {{ enrollment.progress }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="dashboard-progress-bar">
+
+                        <div
+                            class="dashboard-progress-fill
+                            {% if enrollment.is_completed %}
+                                completed
+                            {% endif %}"
+                            style="width: {{ enrollment.progress }}%;"
+                        ></div>
+
+                    </div>
+
+
+                    <small>
+                        {{ enrollment.completed_lessons }}
+                        /
+                        {{ enrollment.total_lessons }}
+                        lessons completed
+                    </small>
+
+                </div>
+
+
+                <!-- Button -->
+
+                {% if enrollment.next_lesson %}
+
+                <a
+                    href="{% url 'lesson_detail' enrollment.next_lesson.id %}"
+                    class="dashboard-continue-btn"
+                >
+                    {% if enrollment.is_completed %}
+                        Review Course →
+                    {% else %}
+                        Continue Learning →
+                    {% endif %}
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- Empty state -->
+
+    <div class="dashboard-empty">
+
+        <div class="empty-icon">
+            📚
+        </div>
+
+        <h3>
+            Start your learning journey
+        </h3>
+
+        <p>
+            You haven't enrolled in any courses yet.
+        </p>
+
+        <a
+            href="{% url 'course_list' %}"
+            class="explore-btn"
+        >
+            Explore Courses
+        </a>
+
+    </div>
+
+
+    {% endif %}
+
+
+    <!-- =================================
+         CATEGORIES
+    ================================= -->
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Explore Categories
+            </h2>
+
+            <p>
+                Find something interesting to learn
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-categories">
+
+        {% for category in categories %}
+
+        <a
+            href="{% url 'course_list' %}"
+            class="dashboard-category-card"
+        >
+
+            <div class="category-icon">
+                📚
+            </div>
+
+            <h3>
+                {{ category.name }}
+            </h3>
+
+            <p>
+                Explore {{ category.name }} courses
+            </p>
+
+        </a>
+
+        {% empty %}
+
+        <div class="dashboard-empty-small">
+
+            <p>
+                No categories available yet.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- =================================
+         POPULAR COURSES
+    ================================= -->
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Popular Courses
+            </h2>
+
+            <p>
+                Learn skills that matter
+            </p>
+
+        </div>
+
+
+        <a href="{% url 'course_list' %}">
+            Explore all →
+        </a>
+
+    </div>
+
+
+    <div class="dashboard-course-grid">
+
+        {% for course in popular_courses %}
+
+        <a
+            href="{% url 'course_detail' course.id %}"
+            class="dashboard-popular-card"
+        >
+
+            {% if course.thumbnail %}
+
+                <img
+                    src="{{ course.thumbnail.url }}"
+                    alt="{{ course.title }}"
+                >
+
+            {% else %}
+
+                <div class="popular-default-image">
+                    🎓
+                </div>
+
+            {% endif %}
+
+
+            <div class="popular-course-info">
+
+                <span class="course-category">
+                    {{ course.category.name }}
+                </span>
+
+                <h3>
+                    {{ course.title }}
+                </h3>
+
+                <p>
+                    {{ course.description|truncatewords:15 }}
+                </p>
+
+
+                <div class="popular-course-bottom">
+
+                    <span>
+                        {{ course.level }}
+                    </span>
+
+                    <strong>
+                        {% if course.price == 0 %}
+                            Free
+                        {% else %}
+                            ₹{{ course.price }}
+                        {% endif %}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        {% empty %}
+
+        <div class="dashboard-empty-small">
+
+            <p>
+                No courses available yet.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+</div>
+
+{% endblock %}

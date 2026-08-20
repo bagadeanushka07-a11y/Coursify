@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ page_title }} | {{ course.title }} | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="lesson-form-page">
+
+
+<!-- HEADER -->
+
+<div class="lesson-form-header">
+
+    <div>
+
+        <p class="small-heading">
+            LESSON MANAGEMENT
+        </p>
+
+        <h1>
+            {{ page_title }}
+        </h1>
+
+        <p class="subtitle">
+            {{ course.title }}
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'manage_lessons' course.id %}"
+        class="view-course-btn"
+    >
+        ← Back to Lessons
+    </a>
+
+</div>
+
+
+<!-- FORM CARD -->
+
+<div class="lesson-form-card">
+
+    <div class="lesson-form-card-header">
+
+        <div class="lesson-form-icon">
+            📖
+        </div>
+
+        <div>
+
+            <h2>
+                Lesson Details
+            </h2>
+
+            <p>
+                Add the content students will learn in this lesson.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <form
+        method="POST"
+        class="course-form"
+    >
+
+        {% csrf_token %}
+
+
+        <!-- GENERAL ERRORS -->
+
+        {% if form.non_field_errors %}
+
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- TITLE -->
+
+        <div class="form-group">
+
+            <label for="{{ form.title.id_for_label }}">
+                Lesson Title
+            </label>
+
+            {{ form.title }}
+
+            {% if form.title.errors %}
+
+                <div class="field-error">
+                    {{ form.title.errors }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group">
+
+            <label for="{{ form.description.id_for_label }}">
+                Description
+            </label>
+
+            {{ form.description }}
+
+            {% if form.description.errors %}
+
+                <div class="field-error">
+                    {{ form.description.errors }}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- VIDEO + DURATION -->
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label for="{{ form.video_url.id_for_label }}">
+                    Video URL
+                </label>
+
+                {{ form.video_url }}
+
+                {% if form.video_url.errors %}
+
+                    <div class="field-error">
+                        {{ form.video_url.errors }}
+                    </div>
+
+                {% endif %}
+
+                <small>
+                    Optional. Add a YouTube or other video URL.
+                </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="{{ form.duration.id_for_label }}">
+                    Duration (minutes)
+                </label>
+
+                {{ form.duration }}
+
+                {% if form.duration.errors %}
+
+                    <div class="field-error">
+                        {{ form.duration.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER -->
+
+        <div class="form-group">
+
+            <label for="{{ form.order.id_for_label }}">
+                Lesson Order
+            </label>
+
+            {{ form.order }}
+
+            {% if form.order.errors %}
+
+                <div class="field-error">
+                    {{ form.order.errors }}
+                </div>
+
+            {% endif %}
+
+            <small>
+                This determines the order in which students see the lessons.
+            </small>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="lesson-form-actions">
+
+            <a
+                href="{% url 'manage_lessons' course.id %}"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="add-course-btn"
+            >
+                {{ button_text }}
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+</div>
+
+{% endblock %}

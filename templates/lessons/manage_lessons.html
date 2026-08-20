@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Lessons | {{ course.title }} | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="manage-lessons-page">
+
+<!-- HEADER -->
+
+<div class="manage-lessons-header">
+
+    <div>
+
+        <p class="small-heading">
+            LESSON MANAGEMENT
+        </p>
+
+        <h1>
+            {{ course.title }}
+        </h1>
+
+        <p class="subtitle">
+            Add and manage lessons for this course.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'add_lesson' course.id %}"
+        class="add-course-btn"
+    >
+        + Add Lesson
+    </a>
+
+</div>
+
+
+<!-- COURSE LESSONS HEADER -->
+
+<div class="lessons-section-header">
+
+    <div>
+
+        <h2>
+            Course Lessons
+        </h2>
+
+        <p>
+            Manage the content students will learn.
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'instructor_dashboard' %}"
+        class="view-course-btn"
+    >
+        ← Back to Courses
+    </a>
+
+</div>
+
+
+<!-- LESSONS -->
+
+{% if lessons %}
+
+    <div class="lessons-list">
+
+        {% for lesson in lessons %}
+
+            <div class="lesson-management-card">
+
+                <!-- Lesson Number -->
+
+                <div class="lesson-number">
+
+                    <span>
+                        {{ lesson.order }}
+                    </span>
+
+                </div>
+
+
+                <!-- Lesson Information -->
+
+                <div class="lesson-management-info">
+
+                    <div class="lesson-label">
+                        LESSON {{ lesson.order }}
+                    </div>
+
+                    <h3>
+                        {{ lesson.title }}
+                    </h3>
+
+                    {% if lesson.description %}
+
+                        <p>
+                            {{ lesson.description|truncatewords:20 }}
+                        </p>
+
+                    {% else %}
+
+                        <p class="no-description">
+                            No description added yet.
+                        </p>
+
+                    {% endif %}
+
+
+                    <!-- META -->
+
+                    <div class="lesson-meta">
+
+                        <span>
+                            ⏱ {{ lesson.duration }} minutes
+                        </span>
+
+
+                        {% if lesson.video_url %}
+
+                            <span>
+                                🎥 Video
+                            </span>
+
+                        {% else %}
+
+                            <span>
+                                📝 Content
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="lesson-management-actions">
+
+                    <a
+                        href="{% url 'edit_lesson' lesson.id %}"
+                        class="edit-course-btn"
+                    >
+                        Edit
+                    </a>
+
+
+                    <a
+                        href="{% url 'delete_lesson' lesson.id %}"
+                        class="delete-course-btn"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <!-- EMPTY STATE -->
+
+    <div class="lessons-empty">
+
+        <div class="lessons-empty-icon">
+            📚
+        </div>
+
+        <h3>
+            No lessons yet
+        </h3>
+
+        <p>
+            Start building your course by adding the first lesson.
+        </p>
+
+        <a
+            href="{% url 'add_lesson' course.id %}"
+            class="add-course-btn"
+        >
+            + Add First Lesson
+        </a>
+
+    </div>
+
+{% endif %}
+
+
+<!-- BACK -->
+
+<div class="back-to-dashboard">
+
+    <a
+        href="{% url 'instructor_dashboard' %}"
+    >
+        ← Back to Instructor Dashboard
+    </a>
+
+</div>
+
+
+</div>
+
+{% endblock %}

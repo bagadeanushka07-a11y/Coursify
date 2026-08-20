@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ course.title }} | Lessons | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="lessons-page">
+
+    <div class="lessons-header">
+
+        <p class="small-heading">
+            LEARNING
+        </p>
+
+        <h1>
+            {{ course.title }}
+        </h1>
+
+        <p class="subtitle">
+            Continue learning and complete your lessons.
+        </p>
+
+    </div>
+
+
+    <div class="lesson-progress-card">
+
+        <div class="lesson-progress-header">
+
+            <div>
+                <span class="progress-label">
+                    Course Progress
+                </span>
+
+                <strong>
+                    {{ completed_count }} / {{ total_lessons }} Lessons
+                </strong>
+            </div>
+
+            <span class="progress-percentage">
+                {{ course_progress }}%
+            </span>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {{ course_progress }}%;"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="lessons-section">
+
+        <div class="lessons-section-header">
+
+            <div>
+                <h2>
+                    Course Lessons
+                </h2>
+
+                <p>
+                    Complete each lesson to make progress.
+                </p>
+            </div>
+
+            <a
+                href="{% url 'my_courses' %}"
+                class="back-link"
+            >
+                ← My Courses
+            </a>
+
+        </div>
+
+
+        <div class="lessons-list">
+
+            {% for lesson in lessons %}
+
+            <a
+                href="{% url 'lesson_detail' lesson.id %}"
+                class="lesson-card{% if lesson.id in completed_lessons %} lesson-completed{% endif %}"
+            >
+
+                <div class="lesson-number">
+
+                    {% if lesson.id in completed_lessons %}
+                        ✓
+                    {% else %}
+                        {{ lesson.order }}
+                    {% endif %}
+
+                </div>
+
+
+                <div class="lesson-info">
+
+                    <div class="lesson-title-row">
+
+                        <h3>
+                            {{ lesson.title }}
+                        </h3>
+
+                        {% if lesson.id in completed_lessons %}
+
+                        <span class="lesson-status completed">
+                            Completed
+                        </span>
+
+                        {% else %}
+
+                        <span class="lesson-status">
+                            Not Started
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if lesson.description %}
+
+                    <p>
+                        {{ lesson.description|truncatewords:20 }}
+                    </p>
+
+                    {% endif %}
+
+
+                    <span class="lesson-duration">
+                        ⏱ {{ lesson.duration }} minutes
+                    </span>
+
+                </div>
+
+
+                <div class="lesson-arrow">
+
+                    {% if lesson.id in completed_lessons %}
+                        ✓
+                    {% else %}
+                        →
+                    {% endif %}
+
+                </div>
+
+            </a>
+
+            {% empty %}
+
+            <div class="empty-course">
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No lessons available
+                </h3>
+
+                <p>
+                    Lessons will appear here once they are added.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

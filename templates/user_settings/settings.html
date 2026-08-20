@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Settings | Coursify
+{% endblock %}
+
+{% block content %}
+
+<div class="settings-page">
+
+    <div class="settings-header">
+
+        <p class="small-heading">
+            ACCOUNT
+        </p>
+
+        <h1>
+            Settings
+        </h1>
+
+        <p class="subtitle">
+            Manage your Coursify account and profile.
+        </p>
+
+    </div>
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="success-message">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="settings-card">
+
+
+        <!-- PROFILE HEADER -->
+
+        <div class="settings-profile">
+
+            <div class="settings-avatar">
+
+                {% if user.profile_picture %}
+
+                    <img
+                        src="{{ user.profile_picture.url }}"
+                        alt="{{ user.username }}"
+                    >
+
+                {% else %}
+
+                    {{ user.username|slice:":1"|upper }}
+
+                {% endif %}
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    {{ user.username }}
+                </h2>
+
+                <p>
+
+                    {% if user.role == "admin" %}
+
+                        Administrator
+
+                    {% elif user.role == "instructor" %}
+
+                        Instructor
+
+                    {% else %}
+
+                        Student
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="settings-form"
+        >
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label>
+                    Username
+                </label>
+
+                {{ form.username }}
+
+                {% if form.username.errors %}
+
+                    <div class="field-error">
+                        {{ form.username.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- FIRST + LAST NAME -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label>
+                        First Name
+                    </label>
+
+                    {{ form.first_name }}
+
+                    {% if form.first_name.errors %}
+
+                        <div class="field-error">
+                            {{ form.first_name.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Last Name
+                    </label>
+
+                    {{ form.last_name }}
+
+                    {% if form.last_name.errors %}
+
+                        <div class="field-error">
+                            {{ form.last_name.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label>
+                    Email Address
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+
+                    <div class="field-error">
+                        {{ form.email.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+                <label>
+                    Phone Number
+                </label>
+
+                {{ form.phone_number }}
+
+                {% if form.phone_number.errors %}
+
+                    <div class="field-error">
+                        {{ form.phone_number.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PROFILE PICTURE -->
+
+            <div class="form-group">
+
+                <label>
+                    Profile Picture
+                </label>
+
+                {{ form.profile_picture }}
+
+                {% if form.profile_picture.errors %}
+
+                    <div class="field-error">
+                        {{ form.profile_picture.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ROLE -->
+
+            <div class="form-group">
+
+                <label>
+                    Account Role
+                </label>
+
+                <div class="role-display">
+
+                    {% if user.role == "admin" %}
+
+                        Admin
+
+                    {% elif user.role == "instructor" %}
+
+                        Instructor
+
+                    {% else %}
+
+                        Student
+
+                    {% endif %}
+
+                </div>
+
+                <small>
+                    Your role can only be changed by an administrator.
+                </small>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="settings-actions">
+
+                <a
+                    href="{% url 'dashboard' %}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="add-course-btn"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

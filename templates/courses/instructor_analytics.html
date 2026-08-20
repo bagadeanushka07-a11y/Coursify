@@ -1,0 +1,1019 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Instructor Analytics | Coursify
+{% endblock %}
+
+
+{% block content %}
+
+<div class="instructor-dashboard">
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <div class="instructor-header">
+
+        <div>
+
+            <p class="small-heading">
+                ANALYTICS
+            </p>
+
+            <h1>
+                Instructor Analytics
+            </h1>
+
+            <p class="subtitle">
+                Track your courses, students and learning performance.
+            </p>
+
+        </div>
+
+
+        <div class="instructor-header-actions">
+
+            <a
+                href="{% url 'instructor_dashboard' %}"
+                class="back-link"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COURSE FILTER
+    ===================================================== -->
+
+    <div class="analytics-filter-card">
+
+        <div>
+
+            <h3>
+                Filter Analytics
+            </h3>
+
+            <p>
+                View analytics for all your courses or select one course.
+            </p>
+
+        </div>
+
+
+        <form method="GET">
+
+            <select
+                name="course"
+                class="analytics-course-select"
+                onchange="this.form.submit()"
+            >
+
+                <option value="">
+                    All Courses
+                </option>
+
+
+                {% for course in courses %}
+
+                <option
+                    value="{{ course.id }}"
+                    {% if selected_course and selected_course.id == course.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ course.title }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         OVERALL STATISTICS
+    ===================================================== -->
+
+    <div class="instructor-stats">
+
+
+        <!-- TOTAL COURSES -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                📚
+            </div>
+
+            <div>
+
+                <span>
+                    Total Courses
+                </span>
+
+                <strong>
+                    {{ total_courses }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL STUDENTS -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                👨‍🎓
+            </div>
+
+            <div>
+
+                <span>
+                    Total Students
+                </span>
+
+                <strong>
+                    {{ total_students }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL LESSONS -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                📖
+            </div>
+
+            <div>
+
+                <span>
+                    Total Lessons
+                </span>
+
+                <strong>
+                    {{ total_lessons }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- COMPLETION -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                🎯
+            </div>
+
+            <div>
+
+                <span>
+                    Completion Rate
+                </span>
+
+                <strong>
+                    {{ overall_completion }}%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         QUIZ STATISTICS
+    ===================================================== -->
+
+    <div class="instructor-section-header">
+
+        <div>
+
+            <p class="small-heading">
+                QUIZZES
+            </p>
+
+            <h2>
+                Quiz Performance
+            </h2>
+
+            <p>
+                See how students are performing across your quizzes.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="instructor-stats">
+
+
+        <!-- TOTAL QUIZZES -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                📝
+            </div>
+
+            <div>
+
+                <span>
+                    Total Quizzes
+                </span>
+
+                <strong>
+                    {{ total_quizzes }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOTAL ATTEMPTS -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                📊
+            </div>
+
+            <div>
+
+                <span>
+                    Quiz Attempts
+                </span>
+
+                <strong>
+                    {{ total_quiz_attempts }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- QUIZ STUDENTS -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                👨‍🎓
+            </div>
+
+            <div>
+
+                <span>
+                    Quiz Students
+                </span>
+
+                <strong>
+                    {{ quiz_students }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- AVERAGE SCORE -->
+
+        <div class="instructor-stat-card">
+
+            <div class="instructor-stat-icon">
+                🎯
+            </div>
+
+            <div>
+
+                <span>
+                    Average Score
+                </span>
+
+                <strong>
+                    {{ overall_quiz_percentage }}%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         QUIZ SUMMARY
+    ===================================================== -->
+
+    <div class="quiz-analytics-summary">
+
+
+        <div class="quiz-summary-card">
+
+            <span>
+                Average Score
+            </span>
+
+            <strong>
+                {{ average_score }}
+            </strong>
+
+            <small>
+                Correct answers per attempt
+            </small>
+
+        </div>
+
+
+
+        <div class="quiz-summary-card">
+
+            <span>
+                Average Percentage
+            </span>
+
+            <strong>
+                {{ overall_quiz_percentage }}%
+            </strong>
+
+            <small>
+                Overall quiz performance
+            </small>
+
+        </div>
+
+
+
+        <div class="quiz-summary-card">
+
+            <span>
+                Passed Attempts
+            </span>
+
+            <strong>
+                {{ overall_passed_attempts }}
+            </strong>
+
+            <small>
+                Attempts scoring 50% or higher
+            </small>
+
+        </div>
+
+
+
+        <div class="quiz-summary-card">
+
+            <span>
+                Pass Rate
+            </span>
+
+            <strong>
+                {{ overall_pass_rate }}%
+            </strong>
+
+            <small>
+                Percentage of passed attempts
+            </small>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         COURSE PERFORMANCE
+    ===================================================== -->
+
+    <div class="instructor-section-header">
+
+        <div>
+
+            <p class="small-heading">
+                COURSES
+            </p>
+
+            <h2>
+                Course Performance
+            </h2>
+
+            <p>
+                Analyze student activity and completion across your courses.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    {% if course_analytics %}
+
+    <div class="instructor-course-grid">
+
+
+        {% for item in course_analytics %}
+
+        <div class="instructor-course-card">
+
+
+            <div class="instructor-course-info">
+
+
+                <span class="course-category">
+                    {{ item.course.category.name }}
+                </span>
+
+
+                <h3>
+                    {{ item.course.title }}
+                </h3>
+
+
+                <div class="course-analytics">
+
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Students
+                        </span>
+
+                        <strong>
+                            {{ item.student_count }}
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Lessons
+                        </span>
+
+                        <strong>
+                            {{ item.lesson_count }}
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Quizzes
+                        </span>
+
+                        <strong>
+                            {{ item.quiz_count }}
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="analytics-item">
+
+                        <span>
+                            Attempts
+                        </span>
+
+                        <strong>
+                            {{ item.quiz_attempt_count }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- COURSE COMPLETION -->
+
+                <div class="course-completion">
+
+
+                    <div class="course-completion-header">
+
+                        <span>
+                            Student Progress
+                        </span>
+
+                        <strong>
+                            {{ item.completion_percentage }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="course-completion-bar">
+
+                        <div
+                            class="course-completion-fill"
+                            style="width: {{ item.completion_percentage }}%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="instructor-course-actions">
+
+
+                    <a
+                        href="{% url 'course_detail' item.course.id %}"
+                        class="view-course-btn"
+                    >
+                        👁 View Course
+                    </a>
+
+
+                    <a
+                        href="{% url 'manage_lessons' item.course.id %}"
+                        class="manage-lessons-btn"
+                    >
+                        📖 Lessons
+                    </a>
+
+
+                    <a
+                        href="{% url 'instructor_analytics' %}?course={{ item.course.id }}"
+                        class="course-analytics-btn"
+                    >
+                        📊 Filter
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <div class="instructor-empty">
+
+        <div class="instructor-empty-icon">
+            📚
+        </div>
+
+        <h3>
+            No course data available
+        </h3>
+
+        <p>
+            Create a course and enroll students to start viewing analytics.
+        </p>
+
+        <a
+            href="{% url 'add_course' %}"
+            class="add-course-btn"
+        >
+            + Create Course
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         QUIZ PERFORMANCE
+    ===================================================== -->
+
+    <div class="instructor-section-header">
+
+        <div>
+
+            <p class="small-heading">
+                QUIZZES
+            </p>
+
+            <h2>
+                Quiz Performance
+            </h2>
+
+            <p>
+                See how students are performing on each quiz.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    {% if quiz_analytics %}
+
+    <div class="quiz-analytics-table-wrapper">
+
+        <table class="quiz-analytics-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Quiz
+                    </th>
+
+                    <th>
+                        Course
+                    </th>
+
+                    <th>
+                        Attempts
+                    </th>
+
+                    <th>
+                        Students
+                    </th>
+
+                    <th>
+                        Avg. Score
+                    </th>
+
+                    <th>
+                        Avg. %
+                    </th>
+
+                    <th>
+                        Pass Rate
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+                {% for item in quiz_analytics %}
+
+                <tr>
+
+
+                    <td>
+
+                        <strong>
+                            {{ item.quiz.title }}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+                        {{ item.quiz.course.title }}
+                    </td>
+
+
+                    <td>
+                        {{ item.attempt_count }}
+                    </td>
+
+
+                    <td>
+                        {{ item.unique_students }}
+                    </td>
+
+
+                    <td>
+                        {{ item.average_score }}
+                    </td>
+
+
+                    <td>
+
+                        <span class="quiz-percentage">
+                            {{ item.percentage }}%
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="quiz-pass-rate">
+                            {{ item.pass_rate }}%
+                        </span>
+
+                    </td>
+
+
+                </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="instructor-empty">
+
+        <div class="instructor-empty-icon">
+            📝
+        </div>
+
+        <h3>
+            No quiz data available
+        </h3>
+
+        <p>
+            Quiz performance will appear here once students attempt your quizzes.
+        </p>
+
+        <a
+            href="{% url 'quiz_list' %}"
+            class="add-course-btn"
+        >
+            Manage Quizzes →
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         STUDENT PERFORMANCE
+    ===================================================== -->
+
+    <div class="instructor-section-header">
+
+        <div>
+
+            <p class="small-heading">
+                STUDENTS
+            </p>
+
+            <h2>
+                Student Performance
+            </h2>
+
+            <p>
+                Monitor individual student learning progress.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    {% if student_performance %}
+
+    <div class="student-performance-wrapper">
+
+        <table class="student-performance-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Student
+                    </th>
+
+                    <th>
+                        Courses
+                    </th>
+
+                    <th>
+                        Completed Courses
+                    </th>
+
+                    <th>
+                        Lesson Progress
+                    </th>
+
+                    <th>
+                        Quiz Attempts
+                    </th>
+
+                    <th>
+                        Quiz Score
+                    </th>
+
+                    <th>
+                        Course Progress
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+                {% for item in student_performance %}
+
+                <tr>
+
+
+                    <td>
+
+                        <strong>
+                            {{ item.student.username }}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+                        {{ item.course_count }}
+                    </td>
+
+
+                    <td>
+                        {{ item.completed_courses }}
+                    </td>
+
+
+                    <td>
+
+                        <td>
+
+    <div class="student-progress">
+
+        <div class="student-progress-header">
+
+            <span>
+                Lesson Progress
+            </span>
+
+            <strong>
+                {{ item.lesson_completion }}%
+            </strong>
+
+        </div>
+
+        <div class="student-progress-bar">
+
+            <div
+                class="student-progress-fill"
+                style="width: {{ item.lesson_completion }}%;"
+            ></div>
+
+        </div>
+
+    </div>
+
+</td>
+
+
+                    <td>
+                        {{ item.quiz_attempts }}
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            {{ item.quiz_percentage }}%
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            {{ item.course_completion }}%
+                        </strong>
+
+                    </td>
+
+
+                </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="instructor-empty">
+
+        <div class="instructor-empty-icon">
+            👨‍🎓
+        </div>
+
+        <h3>
+            No student data available
+        </h3>
+
+        <p>
+            Student performance will appear here once students enroll in your courses.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         QUIZ INSIGHTS
+    ===================================================== -->
+
+    <div class="analytics-footer-card">
+
+        <div>
+
+            <span class="small-heading">
+                QUIZ INSIGHTS
+            </span>
+
+            <h2>
+                Monitor your students' quiz performance
+            </h2>
+
+            <p>
+                Use quiz attempts, average scores and pass rates
+                to identify areas where students may need additional
+                learning support.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'quiz_list' %}"
+            class="analytics-footer-btn"
+        >
+            Manage Quizzes →
+        </a>
+
+    </div>
+
+
+
+</div>
+
+
+{% endblock %}

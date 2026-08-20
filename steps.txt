@@ -1,0 +1,123 @@
+Step 1: Define the Project
+Project Name
+
+Coursify
+
+Tagline
+
+"Learn. Grow. Succeed."
+
+Project Description
+
+Coursify is a web-based online learning platform where instructors can create and manage courses, and students can enroll, learn through videos and notes, take quizzes, track progress, and earn certificates upon course completion.
+
+Step 2: Objectives
+Student can:
+Register/Login
+Browse Courses
+Search Courses
+Enroll in Courses
+Watch Video Lessons
+Download Notes
+Attempt Quizzes
+View Progress
+Download Certificate
+Review Courses
+Instructor can:
+Create Courses
+Upload Videos
+Upload Notes
+Create Quizzes
+View Enrolled Students
+Edit/Delete Courses
+Admin can:
+Manage Users
+Manage Courses
+Manage Categories
+View Reports
+Remove Spam Reviews
+Step 3: Functional Requirements
+Authentication
+Registration
+Login
+Logout
+JWT Authentication
+Password Encryption
+Course Module
+Add Course
+Update Course
+Delete Course
+Search
+Filter
+Lesson Module
+Upload Video
+Upload Notes (PDF)
+Lesson Ordering
+Enrollment Module
+Enroll Student
+View My Courses
+Quiz Module
+Create Quiz
+Attempt Quiz
+Auto Calculate Score
+Certificate Module
+Generate PDF Certificate
+Review Module
+Rating
+Comments
+Step 4: Non-Functional Requirements
+Responsive UI
+Secure Authentication
+Fast API Responses
+MySQL Database
+Scalable Architecture
+Easy Maintenance
+Step 5: Technology Stack
+Component	Technology
+Backend	Python
+Framework	Django
+REST API	Django REST Framework
+Database	MySQL
+Frontend	HTML, CSS, Bootstrap, JavaScript
+Authentication	JWT
+API Testing	Postman
+Version Control	Git & GitHub
+Step 6: User Roles
+👨‍🎓 Student
+
+Can learn.
+
+👨‍🏫 Instructor
+
+Can teach.
+
+👨‍💼 Admin
+
+Controls the platform.
+
+Step 7: Features
+Student
+Register
+Login
+Edit Profile
+Browse Courses
+Enroll
+Watch Videos
+Download Notes
+Take Quiz
+Download Certificate
+Give Reviews
+Instructor
+Create Course
+Upload Thumbnail
+Upload Videos
+Upload Notes
+Create Quiz
+View Students
+Edit Course
+Admin
+Manage Students
+Manage Instructors
+Manage Courses
+Manage Categories
+Dashboard Analytics
