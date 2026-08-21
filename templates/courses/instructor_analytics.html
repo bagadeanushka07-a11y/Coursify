@@ -890,34 +890,32 @@ Instructor Analytics | Coursify
 
                     <td>
 
-                        <td>
+                        <div class="student-progress">
 
-    <div class="student-progress">
+                            <div class="student-progress-header">
 
-        <div class="student-progress-header">
+                                <span>
+                                    Lesson Progress
+                                </span>
 
-            <span>
-                Lesson Progress
-            </span>
+                                <strong>
+                                    {{ item.lesson_completion }}%
+                                </strong>
 
-            <strong>
-                {{ item.lesson_completion }}%
-            </strong>
+                            </div>
 
-        </div>
+                            <div class="student-progress-bar">
 
-        <div class="student-progress-bar">
+                                <div
+                                    class="student-progress-fill"
+                                    style="width: {{ item.lesson_completion }}%;"
+                                ></div>
 
-            <div
-                class="student-progress-fill"
-                style="width: {{ item.lesson_completion }}%;"
-            ></div>
+                            </div>
 
-        </div>
+                        </div>
 
-    </div>
-
-</td>
+                    </td>
 
 
                     <td>
