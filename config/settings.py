@@ -43,28 +43,28 @@ ALLOWED_HOSTS = os.environ.get(
 INSTALLED_APPS = [
 
     # Django Apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
     # Third Party Apps
-    'rest_framework',
-    'rest_framework_simplejwt',
+    "rest_framework",
+    "rest_framework_simplejwt",
 
     # Local Apps
-    'accounts',
-    'categories',
-    'courses',
-    'lessons',
-    'enrollments',
-    'quizzes',
-    'certificates',
-    'reviews',
-    'dashboard',
-    'user_settings',
+    "accounts",
+    "categories",
+    "courses",
+    "lessons",
+    "enrollments",
+    "quizzes",
+    "certificates",
+    "reviews",
+    "dashboard",
+    "user_settings",
 ]
 
 
@@ -74,19 +74,19 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 
-    'django.middleware.security.SecurityMiddleware',
+    "django.middleware.security.SecurityMiddleware",
 
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    "django.contrib.sessions.middleware.SessionMiddleware",
 
-    'django.middleware.common.CommonMiddleware',
+    "django.middleware.common.CommonMiddleware",
 
-    'django.middleware.csrf.CsrfViewMiddleware',
+    "django.middleware.csrf.CsrfViewMiddleware",
 
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
 
-    'django.contrib.messages.middleware.MessageMiddleware',
+    "django.contrib.messages.middleware.MessageMiddleware",
 
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 
@@ -94,7 +94,7 @@ MIDDLEWARE = [
 # URL CONFIGURATION
 # ============================================================
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 
 # ============================================================
@@ -104,23 +104,23 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
 
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
 
-        'DIRS': [
-            BASE_DIR / 'templates'
+        "DIRS": [
+            BASE_DIR / "templates"
         ],
 
-        'APP_DIRS': True,
+        "APP_DIRS": True,
 
-        'OPTIONS': {
+        "OPTIONS": {
 
-            'context_processors': [
+            "context_processors": [
 
-                'django.template.context_processors.request',
+                "django.template.context_processors.request",
 
-                'django.contrib.auth.context_processors.auth',
+                "django.contrib.auth.context_processors.auth",
 
-                'django.contrib.messages.context_processors.messages',
+                "django.contrib.messages.context_processors.messages",
 
             ],
 
@@ -135,7 +135,7 @@ TEMPLATES = [
 # WSGI
 # ============================================================
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # ============================================================
@@ -150,13 +150,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 if os.environ.get("DATABASE_URL"):
 
-    # --------------------------------------------------------
-    # PRODUCTION - RENDER POSTGRESQL
-    # --------------------------------------------------------
-
     DATABASES = {
-        "default": dj_database_url.config(
-            default=os.environ.get("DATABASE_URL"),
+        "default": dj_database_url.parse(
+            os.environ.get("DATABASE_URL"),
             conn_max_age=600,
             ssl_require=True,
         )
@@ -164,43 +160,30 @@ if os.environ.get("DATABASE_URL"):
 
 else:
 
-    # --------------------------------------------------------
-    # LOCAL DEVELOPMENT - MYSQL
-    # --------------------------------------------------------
-
     DATABASES = {
-
-        'default': {
-
-            'ENGINE': 'django.db.backends.mysql',
-
-            'NAME': os.environ.get(
-                'DB_NAME',
-                'coursify_db'
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.environ.get(
+                "DB_NAME",
+                "coursify_db"
             ),
-
-            'USER': os.environ.get(
-                'DB_USER',
-                'root'
+            "USER": os.environ.get(
+                "DB_USER",
+                "root"
             ),
-
-            'PASSWORD': os.environ.get(
-                'DB_PASSWORD',
-                ''
+            "PASSWORD": os.environ.get(
+                "DB_PASSWORD",
+                ""
             ),
-
-            'HOST': os.environ.get(
-                'DB_HOST',
-                '127.0.0.1'
+            "HOST": os.environ.get(
+                "DB_HOST",
+                "127.0.0.1"
             ),
-
-            'PORT': os.environ.get(
-                'DB_PORT',
-                '3306'
+            "PORT": os.environ.get(
+                "DB_PORT",
+                "3306"
             ),
-
         }
-
     }
 
 
@@ -211,23 +194,23 @@ else:
 AUTH_PASSWORD_VALIDATORS = [
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 
 ]
@@ -237,16 +220,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # CUSTOM USER MODEL
 # ============================================================
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = "accounts.User"
 
 
 # ============================================================
 # INTERNATIONALIZATION
 # ============================================================
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -257,22 +240,22 @@ USE_TZ = True
 # STATIC FILES
 # ============================================================
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # ============================================================
 # MEDIA FILES
 # ============================================================
 
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ============================================================
@@ -281,9 +264,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
 
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    "DEFAULT_AUTHENTICATION_CLASSES": (
 
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
 
     ),
 
@@ -294,4 +277,4 @@ REST_FRAMEWORK = {
 # DEFAULT PRIMARY KEY
 # ============================================================
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
